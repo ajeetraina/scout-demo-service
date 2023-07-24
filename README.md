@@ -3,6 +3,14 @@
 A repository containing an application and Dockerfile to demonstrate the use of Docker Scout to analyze and remediate CVEs in a container image.
 The application consists of a basic ExpressJS server and uses an intentionally old version of Express and Alpine base image.
 
+## Table of Contents
+
+- [Installing Docker Scout](#getting-started)
+- [Enabling Docker Scout](#enable-docker-scout)
+- [Analyze image vulnerabilities](#analyze-image-vulnerabilities)
+- [Fix application vulnerabilities](#fix-application-vulnerabilities)
+- [Integrating with GitHub Action](#integrating-with-github-action)
+
 ## Getting Started
 
 - Install the latest version of Scout CLI
