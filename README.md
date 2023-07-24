@@ -148,3 +148,14 @@ Now, viewing the latest tag of the image in Docker Desktop, the Docker Scout Das
 <img width="1025" alt="image" src="https://github.com/dockersamples/scout-demo-service/assets/313480/57d43a70-4e19-4b2c-9279-342c4ad5002e">
 
 
+## Integrating with GitHub Action
+
+Just modify the Docker Hub registry credentials and add the following secrets under GitHub:
+
+- DOCKER_USER: The username for the Docker registry.
+- DOCKER_PAT: The personal access token (PAT) or password for the Docker registry.
+
+
+<img width="1241" alt="image" src="https://github.com/ajeetraina/scout-demo-service/assets/313480/1c5638ef-594e-4b4f-b6ac-7fe9ee839774">
+
+
