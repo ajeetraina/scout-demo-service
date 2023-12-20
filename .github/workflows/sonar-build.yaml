@@ -1,0 +1,107 @@
+name: docker-build-demo
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*.*.*"]
+  pull_request_target:
+    branches: ["main"]
+
+env:
+  IMAGE_NAME: ajeetraina/scout-demo-service
+  SHA: ${{ github.event.pull_request.head.sha || github.event.after }}
+  DOCKERFILE_PATH: Dockerfile
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ env.SHA }}
+
+      - name: Setup Docker buildx
+        uses: docker/setup-buildx-action@v2.5.0
+
+      - name: Log into registry
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ajeetraina
+          password: ${{ secrets.DOCKER_PAT }}
+
+      - name: Extract Docker metadata
+        id: meta
+        uses: docker/metadata-action@v4.4.0
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          labels: |
+            org.opencontainers.image.revision=${{ env.SHA }}
+            com.docker.image.source.entrypoint=${{ env.DOCKERFILE_PATH }}
+
+      - name: Build and push Docker image on push
+        id: build-and-push
+        if: ${{ github.event_name != 'pull_request_target' }}
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          load: false
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: "linux/amd64,linux/arm64"
+          sbom: true
+          provenance: true
+
+
+      - name: Analyze image
+        if: ${{ github.event_name != 'pull_request_target' }}
+        uses: docker/scout-action@main
+        with:
+          command: cves
+          image: registry://${{ steps.meta.outputs.tags }}
+          platform: "linux/amd64"
+          summary: true
+          organization: ajeetraina
+      
+      - name: Build and push Docker image on PR
+        id: build-and-push-pr
+        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: docker/build-push-action@v4.0.0
+        with:
+          context: .
+          load: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          platforms: "linux/arm64"
+          sbom: false
+          provenance: true          
+
+      - name: Policy to deployed image
+        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: docker/scout-action@main
+        with:
+          command: policy
+          image: local://${{ steps.meta.outputs.tags }}
+          only-severities: critical,high
+          to-env: prod
+          platform: "linux/amd64"       
+          summary: true
+          organization: ajeetraina
+
+
+      - name: Compare to deployed image
+        if: ${{ github.event_name == 'pull_request_target' }}
+        uses: docker/scout-action@main
+        with:
+          command: compare
+          image: local://${{ steps.meta.outputs.tags }}
+          only-severities: critical,high
+          to-env: prod
+          platform: "linux/amd64"       
+          summary: true
+          organization: ajeetraina 
+          exit-code: true
+      
+     
