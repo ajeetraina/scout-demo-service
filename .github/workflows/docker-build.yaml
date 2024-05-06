@@ -40,7 +40,7 @@ jobs:
             org.opencontainers.image.revision=${{ env.SHA }}
             com.docker.image.source.entrypoint=${{ env.DOCKERFILE_PATH }}
 
-      - name: Build and push Docker image on push
+      - name: Build & push Docker image on push
         id: build-and-push
         if: ${{ github.event_name != 'pull_request_target' }}
         uses: docker/build-push-action@v4.0.0
