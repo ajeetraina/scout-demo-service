@@ -31,7 +31,7 @@ jobs:
           username: ajeetraina
           password: ${{ secrets.DOCKER_PAT }}
 
-      - name: Extract the Docker metadata
+      - name: Extract Docker metadata
         id: meta
         uses: docker/metadata-action@v4.4.0
         with:
