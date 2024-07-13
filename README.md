@@ -101,7 +101,15 @@ This time, you will find all the vulnerabilities are fixed.
  docker push <org-name>/scout-demo:v1
 ```
 
+Alternatively, you can use Docker Dashboard directly too to push your Docker image to the Docker Hub.
+
+<img width="1065" alt="image" src="https://github.com/user-attachments/assets/19934207-3a80-4d44-9f3c-33f5e7b744e0">
+
+
 ## Enable Docker Scout
+
+<img width="1455" alt="image" src="https://github.com/user-attachments/assets/ab681d7b-39fd-4164-a615-127c17a49d56">
+
 
 Docker Scout analyzes all local images by default. To analyze images in remote repositories, you need to enable it first. You can do this from Docker Hub, the Docker Scout Dashboard, and CLI. Find out how in the overview guide.
 
