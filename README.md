@@ -20,6 +20,11 @@ curl -fsSL https://raw.githubusercontent.com/docker/scout-cli/main/install.sh -o
 sh install-scout.sh
 ```
 
+If you're using Docker Desktop, you can enable background SBOM indexing as shown:
+
+<img width="1206" alt="image" src="https://github.com/user-attachments/assets/e320a227-da85-4714-bed2-9eb5b8f64e68">
+
+
 ## Clone the repo
 
 ```
@@ -40,6 +45,9 @@ Access the app:
 curl localhost:3000
 Hello World!
 ```
+
+If you're using Docker Desktop, you should be able to see vulnerabilities right now on your Docker dashboard.
+
 
 
 ## Create and push the repository on Docker Hub:
