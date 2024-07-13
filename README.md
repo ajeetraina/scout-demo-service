@@ -48,6 +48,51 @@ Hello World!
 
 If you're using Docker Desktop, you should be able to see vulnerabilities right now on your Docker dashboard.
 
+<img width="1176" alt="image" src="https://github.com/user-attachments/assets/d6d8cda2-db13-4512-8b28-4be63f4ebb93">
+
+There are 2 major vulnerabilties reported - the first one is related to OpenSSL package and other one is with Express 4.17.3.
+It says that Impact Versions of Express.js prior to 4.19.2 and pre-release alpha and beta versions before 5.0.0-beta.3 are affected by an open redirect vulnerability using malformed URLs. 
+That means we need to update our Express v4.17.3 to 4.19.2
+
+
+<img width="1030" alt="image" src="https://github.com/user-attachments/assets/af409b26-92d5-4cec-812f-e1498a8e9d14">
+
+
+
+Open up package.json in a terminal window and change express from 4.17.3 to 4.19.2 and rebuild it this time with v2.0
+
+```
+docker build -t scout-demo:v2 .
+```
+
+<img width="1162" alt="image" src="https://github.com/user-attachments/assets/9f3d057a-c917-4aa8-be1c-cbff34d36611">
+
+
+You will find that express vulnerabilities is now fixed.
+
+<img width="1200" alt="image" src="https://github.com/user-attachments/assets/ee4ab5e5-e855-4bd7-b340-30ef66ffcb62">
+
+You will see that the OpenSSL vulnerability is still there. To fix this, open up your Dockerfile and add openssl as shown below:
+
+```
+RUN apk add --no-cache \
+  nodejs \
+  openssl 
+```
+
+Try re-building the Docker image with v3.0 this time:
+
+```
+docker build -t scout-demo:v3 .
+```
+
+This time, you will find all the vulnerabilities are fixed.
+
+<img width="1490" alt="image" src="https://github.com/user-attachments/assets/d00a7099-8eed-4d40-aa00-24636ab14301">
+
+
+
+
 
 
 ## Create and push the repository on Docker Hub:
